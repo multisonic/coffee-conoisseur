@@ -13,12 +13,6 @@
   padding-right: 1rem /* 16px */;
 }
 
-.heroImage {
-  position: absolute;
-  top: 0px;
-  z-index: 1;
-}
-
 .cardLayout {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -40,6 +34,12 @@
 
 .sectionWrapper {
   margin-top: 5rem;
+}
+
+.heroImage {
+  position: absolute;
+  top: 0px;
+  z-index: 1;
 }
 
 /** Breakpoints:
