@@ -2,28 +2,31 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import coffeeStoresData from "../../data/coffee-stores.json";
 import styles from "../../styles/coffee-store.module.css";
 import cls from "classnames";
+import { fetchCoffeeStores } from "../../lib/coffee-stores";
 
-export function getStaticProps(staticProps) {
+export async function getStaticProps(staticProps) {
   const params = staticProps.params;
-  console.log(params);
-  // could also destructure above to getStaticProps({params})
+  console.log("params", params);
+  const coffeeStores = await fetchCoffeeStores();
+
   return {
     props: {
-      coffeeStore: coffeeStoresData.find((coffeeStore) => {
-        return coffeeStore.id.toString() === params.id; //dynamic id
+      coffeeStore: coffeeStores.find((coffeeStore) => {
+        return coffeeStore.fsq_id.toString() === params.id; //dynamic id
       }),
     },
   };
 }
 
-export function getStaticPaths() {
-  const paths = coffeeStoresData.map((coffeeStore) => {
+export async function getStaticPaths() {
+  const coffeeStores = await fetchCoffeeStores();
+  const paths = coffeeStores.map((coffeeStore) => {
+    console.log("coffee store", coffeeStore);
     return {
       params: {
-        id: coffeeStore.id.toString(),
+        id: coffeeStore.fsq_id.toString(),
       },
     };
   });
@@ -60,7 +63,10 @@ const CoffeeStore = (props) => {
             <h1 className={styles.name}>{name}</h1>
           </div>
           <Image
-            src={imgUrl}
+            src={
+              imgUrl ||
+              "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"
+            }
             width={600}
             height={360}
             className={styles.storeImg}
