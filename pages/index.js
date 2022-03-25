@@ -6,12 +6,23 @@ import styles from "../styles/Home.module.css";
 import coffeeStoresData from "../data/coffee-stores.json";
 
 export async function getStaticProps(context) {
-  // typically, we would make the api call here:
-  //const data = fetch();
+  const response = await fetch(
+    "https://api.foursquare.com/v3/places/search?ll=40.788260%2C-74.256263&radius=16093&categories=13035&limit=6",
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: "fsq3+510LIMO/GikRJGpomQDi8tW/DPuzS936zzHnXwRYg0=",
+      },
+    }
+  );
+  const data = await response.json();
+  console.log(data);
+
   return {
     props: {
-      coffeeStores: coffeeStoresData, // can declare like this since key/value are same
-    }, //will be passed to the page component as props
+      coffeeStores: data.results,
+    },
   };
 }
 
@@ -44,10 +55,13 @@ export default function Home(props) {
               {props.coffeeStores.map((coffeeStore) => {
                 return (
                   <Card
-                    key={coffeeStore.id}
+                    key={coffeeStore.fsq_id}
                     name={coffeeStore.name}
-                    imgUrl={coffeeStore.imgUrl}
-                    href={`/coffee-store/${coffeeStore.id}`}
+                    imgUrl={
+                      coffeeStore.imgUrl ||
+                      "https://images.unsplash.com/photo-1498804103079-a6351b050096?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2468&q=80"
+                    }
+                    href={`/coffee-store/${coffeeStore.fsq_id}`}
                     className={styles.card}
                   />
                 );
