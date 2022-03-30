@@ -35,11 +35,16 @@ export default function Home(props) {
           handleOnClick={handleOnBannerBtnClick}
         />
         <div className={styles.heroImage}>
-          <Image src="/static/hero-image.png" width={700} height={400} />
+          <Image
+            alt="Coffee Connoisseur Logo"
+            src="/static/hero-image.png"
+            width={700}
+            height={400}
+          />
         </div>
         {props.coffeeStores.length > 0 && (
           <>
-            <h2 className={styles.heading2}>Toronto Stores</h2>
+            <h2 className={styles.heading2}>NYC Stores</h2>
             <div className={styles.cardLayout}>
               {props.coffeeStores.map((coffeeStore) => {
                 return (
